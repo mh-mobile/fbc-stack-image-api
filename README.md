@@ -1,6 +1,6 @@
 # fbc-stack-image-api
 
-![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=fbc-stack-image-api) ![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 FBC Stackの技術スタックの画像APIです。
 
