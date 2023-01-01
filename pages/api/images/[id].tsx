@@ -1,7 +1,6 @@
 import chromium from 'chrome-aws-lambda'
 import { scrollPageToBottom } from 'puppeteer-autoscroll-down'
 import puppeteer from 'puppeteer-core'
-import { getAllPostIds } from '../../../lib/posts'
 
 async function captureStack(url: string) {
   await chromium.font(
@@ -42,12 +41,6 @@ async function captureStack(url: string) {
 
 export default async function handler(req, res) {
   const { id } = req.query
-  const allPostIds = getAllPostIds().map((value) => value.params.id)
-  if (!allPostIds.includes(id)) {
-    res.statusCode = 404
-    res.end('Not Found')
-    return
-  }
 
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
   const capturedURL = `${baseURL}/posts/${id}`
