@@ -17,10 +17,15 @@ async function captureStack(url: string) {
   await page.setExtraHTTPHeaders({
     'Accept-Language': 'ja-JP',
   })
-  await page.goto(url, {
+  const response = await page.goto(url, {
     waitUntil: 'networkidle2',
     timeout: 30000,
   })
+
+  if (response.status() >= 400) {
+    browser.close()
+    return null
+  }
 
   // 画面外の遅延ローディングの画像をキャプチャするために、
   // 画面下部にスクロールした上でキャプチャする。
@@ -45,6 +50,11 @@ export default async function handler(req, res) {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
   const capturedURL = `${baseURL}/posts/${id}`
   const buffer = await captureStack(capturedURL)
+  if (buffer == null) {
+    res.statusCode = 404
+    res.end('Not Found')
+    return
+  }
 
   res.setHeader('Content-Type', 'image/png')
   res.setHeader(
